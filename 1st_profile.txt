@@ -1,3 +1,7 @@
 第一个github相关文件
 1.将本地文件夹与本地git相关联
 	git init
+
+2.提交文件步骤
+	git add 1st_profile.txt
+	git commit -m "提交说明1st_profile"
