@@ -1,0 +1,3 @@
+第一个github相关文件
+1.将本地文件夹与本地git相关联
+	git init
