@@ -30,3 +30,7 @@
 
 10.新建文件
 	touch 1.txt
+
+11.本地删除文件，还原
+	git checkout master
+	git reset --hard
