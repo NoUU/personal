@@ -34,3 +34,9 @@
 11.本地删除文件，还原
 	git checkout master
 	git reset --hard
+
+12.增加新git用户
+	git branch e450
+
+13.切换到用户
+	git checkout e450
