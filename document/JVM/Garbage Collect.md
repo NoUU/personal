@@ -114,3 +114,87 @@ Parallel Scavenge 收集器的 Old 区版本，使用 **多线程** 和 **"标�
 > 2. 并发标记 	CMS concurrent mark    进行 GC Root Tracing
 > 3. 重新标记	 CMS remark   修改并发标记因用户程序变动的内容 STW 
 > 4. 并发清除	 CMS concurrent sweep 
+
+并发类的垃圾收集器，用户线程和垃圾回收线程可以同时执行。
+
+比较关注的是停顿时间，因此降低了对吞吐量的要求
+
+### 1.4.7  G1 收集器
+
+Region 对堆进行了重新布局，逻辑上存在 Young 区，Old 区等。物理上已经不存在 隔离
+
+JDK 7 开始使用，JDK 8 成熟，JDK 9 默认的垃圾收集器，适用于新生代老年代。
+
+判断是否使用 G1 收集器
+
+ * 堆中存活的对象占50%以上
+
+   > More than 50% of the Java heap is occupied with live data.
+
+ * 对象的分配使用销毁比较频率
+
+   > The rate of object allocation rate or promotion varies significantly.
+
+ * 较短的垃圾回收时间以及 compact 时间 （时间小于 0.5s 到1s）
+
+   > The application is experiencing undesired long garbage collection or compaction pauses (longer than 0.5 to 1 second).
+
+## 1.5 垃圾收集器分类
+
+### 1.5.1 串行收集器
+
+​	Serial 收集器和 Serial Old 收集器
+
+​	只有一个垃圾回收线程，用户线程暂停。适用于内存比较小的嵌入式设备。
+
+### 1.5.2 并行收集器
+
+​	Parallel Scanvenge Parallel Old
+
+​	多个垃圾收集线程并行工作，但此时用户线程仍处于暂停状态。适用于科学计算、后台处理等交互场景
+
+### 1.5.3 并发收集器	
+
+​	CMS、G1
+
+​	用户线程的垃圾回收线程同时执行（但并不一定是并行的，可能是交替执行），垃圾收集线程在执行时并不会暂停用户线程。适用于对交互时间有要求的场景，例如 web
+
+## 1.6 JVM 调优
+
+### 1.6.1 GC 收集器：停顿时间和吞吐量
+
+ * 停顿时间：垃圾收集器进行垃圾收集回收时，终端响应的时间。
+
+   > 停顿时间较短，适合用于和用户进行交互的程序，良好的响应速度能提升用户体验。
+
+* 吞吐量：用户代码执行时间 / （用户代码执行时间 + 垃圾收集时间）
+
+  > 高吞吐量可以高效地利用 CPU，尽快完成程序的运算任务，主要适合后台运算且不需要太多交互的任务
+
+### 1.6.2 如何选择垃圾回收器
+
+* 优先调整堆的大小让服务器自己选择
+* 如果内存小于100M，使用串行收集器
+* 如果是单核，并且对停顿时间没有要求，使用串行或 JVM 自己选择
+* 如果允许停顿时间超过1s，并行或者 JVM 自己选择
+* 如果响应时间比较重要，并且不能超过1s，使用并发
+
+### 1.6.3 开启相应的垃圾回收器
+
+（1）串行
+
+ * -XX:+UserSerialGC	
+ * -XX:+UserSerialOldGC
+
+（2） 并行 （吞吐量优先）
+
+* -XX:+UserParallelGC
+* -XX:+UserParallelOldGC
+
+（3）并发收集器 （响应时间优先）
+
+* -XX:+UserConcMarlSweepGC
+* -XX:+UserG1GC
+
+
+
