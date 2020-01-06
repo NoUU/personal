@@ -42,4 +42,4 @@
 	git checkout e450
 
 14.从 github 获取最新数据 注意使用的用户是否具有权限
-	git pul
+	git pull
