@@ -15,14 +15,14 @@
 5.本地git仓库与github关联
 	git remote add https://github.com/NoUU/personal.git
 
-6.本地git仓库删除与gitbug关联
+6.本地git仓库删除与github关联
 	git remote remove origin
 
 7.本地文件推送到github仓库
 	git push -u origin master
 
 8.删除本地文件后更新本地git状态
-	git -rm 1st_profile.txt
+	git rm 1st_profile.txt
 	git commit -m "删除文件"
 
 9.新建文件夹
